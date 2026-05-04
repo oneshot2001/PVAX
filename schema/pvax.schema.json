@@ -1,0 +1,697 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/oneshot2001/PVAX/blob/main/schema/pvax.schema.json",
+  "title": "PVAX — Physical Vulnerability Assessment Exchange",
+  "description": "A signed, portable bundle capturing a complete physical security hardening transaction: vulnerability → mitigation control → quote → installed evidence → test → attestation. CC0 schema. See https://github.com/oneshot2001/PVAX",
+  "type": "object",
+
+  "required": [
+    "pvax_version",
+    "assessment_id",
+    "generated_at",
+    "generated_by",
+    "facility",
+    "threat_model",
+    "findings"
+  ],
+
+  "additionalProperties": false,
+
+  "properties": {
+    "pvax_version": {
+      "description": "Semantic version of the schema this file conforms to.",
+      "type": "string",
+      "pattern": "^0\\.[0-9]+(\\.[0-9]+)?$",
+      "examples": ["0.2", "0.3"]
+    },
+
+    "assessment_id": {
+      "description": "Globally unique identifier (ULID preferred, UUIDv4 acceptable). Stable across edits within a single facility scope.",
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 64
+    },
+
+    "generated_at": {
+      "description": "ISO 8601 timestamp with timezone offset.",
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "generated_by": { "$ref": "#/$defs/GeneratedBy" },
+    "facility": { "$ref": "#/$defs/Facility" },
+    "threat_model": { "$ref": "#/$defs/ThreatModel" },
+
+    "findings": {
+      "description": "Vulnerabilities identified during the assessment.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Finding" }
+    },
+
+    "controls": {
+      "description": "Recommended mitigations for findings. Method-driven, not SKU-driven.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Control" }
+    },
+
+    "quotes": {
+      "description": "Integrator pricing for proposed controls. SKUs/manufacturers live here, not in controls.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Quote" }
+    },
+
+    "evidence": {
+      "description": "Photos, videos, documents, and logs that substantiate findings, controls, installations, and tests.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Evidence" }
+    },
+
+    "tests": {
+      "description": "Operational tests proving a control performs as designed.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Test" }
+    },
+
+    "outcomes": { "$ref": "#/$defs/Outcomes" },
+
+    "attestations": {
+      "description": "Cryptographic signatures attesting to portions of the file.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Attestation" }
+    },
+
+    "grant_attachments": {
+      "description": "Pre-formatted exports for specific federal/state grant programs. Generated, not authored.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/GrantAttachment" }
+    },
+
+    "extensions": {
+      "description": "Implementation-specific extensions outside canonical schema. MUST be namespaced (vendor.field) and MUST NOT change semantics of canonical fields.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+
+  "$defs": {
+    "GeneratedBy": {
+      "type": "object",
+      "required": ["assessor", "tool"],
+      "properties": {
+        "assessor": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "credentials": { "type": "array", "items": { "type": "string" } },
+            "license_or_cert": { "type": ["string", "null"] },
+            "organization": { "type": "string" },
+            "contact": { "type": "string" }
+          }
+        },
+        "tool": {
+          "type": "object",
+          "required": ["name", "version"],
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": "string" },
+            "vendor": { "type": "string" },
+            "source_url": { "type": "string", "format": "uri" }
+          }
+        },
+        "coi_disclosed": {
+          "description": "Conflict-of-interest disclosures aligned with 2 CFR Part 200 procurement standards.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["vendor", "relationship", "applies_to"],
+            "properties": {
+              "vendor": { "type": "string" },
+              "relationship": { "type": "string" },
+              "applies_to": { "type": "string" },
+              "mitigation": { "type": "string" },
+              "alternatives_considered": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+
+    "Facility": {
+      "type": "object",
+      "required": ["facility_id", "name", "type", "address"],
+      "properties": {
+        "facility_id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": {
+          "enum": [
+            "k12_school",
+            "higher_education",
+            "house_of_worship",
+            "nonprofit",
+            "healthcare",
+            "retail",
+            "cannabis_dispensary",
+            "multifamily",
+            "government",
+            "critical_infrastructure",
+            "open_public_space",
+            "outdoor_event_venue",
+            "self_storage",
+            "hospitality",
+            "industrial",
+            "marina_waterfront",
+            "equine",
+            "other"
+          ]
+        },
+        "occupancy_count": { "type": "integer", "minimum": 0 },
+        "address": {
+          "type": "object",
+          "required": ["line1", "city", "state", "country"],
+          "properties": {
+            "line1": { "type": "string" },
+            "line2": { "type": "string" },
+            "city": { "type": "string" },
+            "state": { "type": "string" },
+            "postal_code": { "type": "string" },
+            "country": { "type": "string", "minLength": 2, "maxLength": 3 }
+          }
+        },
+        "geo": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+            "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+          }
+        },
+        "construction": {
+          "type": "object",
+          "properties": {
+            "primary_use": { "type": "string" },
+            "year_built": { "type": "integer" },
+            "stories": { "type": "integer", "minimum": 1 },
+            "exterior_construction": {
+              "enum": ["masonry", "wood_frame", "concrete", "steel_frame", "mixed", "other"]
+            },
+            "roof": { "enum": ["flat", "pitched", "mixed", "other"] }
+          }
+        },
+        "ahj": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "jurisdiction_code": { "type": "string" }
+          }
+        },
+        "ssat_export_uuid": {
+          "description": "Links to a CISA SSAT JSON export when one exists. Allows PVAX to extend rather than replace.",
+          "type": ["string", "null"]
+        }
+      }
+    },
+
+    "ThreatModel": {
+      "type": "object",
+      "required": ["scenarios"],
+      "properties": {
+        "scenarios": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "enum": [
+                  "active_shooter_external",
+                  "active_shooter_internal",
+                  "insider_unauthorized_access",
+                  "after_hours_burglary",
+                  "vehicle_borne_threat",
+                  "swatting_or_diversion",
+                  "cyber_physical_compromise",
+                  "insider_threat_intelligence",
+                  "medical_emergency_disguised_threat",
+                  "civil_disturbance_spillover"
+                ]
+              },
+              "name": { "type": "string" },
+              "frequency_class": { "enum": ["very_low", "low", "medium", "high", "very_high"] },
+              "consequence_class": { "enum": ["minor", "moderate", "high", "catastrophic"] },
+              "design_basis_threat": { "type": "string" }
+            }
+          }
+        },
+        "framework_references": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "version": { "type": "string" },
+              "published": { "type": "string" },
+              "section": { "type": "string" },
+              "applicable_when": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          }
+        }
+      }
+    },
+
+    "Finding": {
+      "type": "object",
+      "required": ["id", "category", "title", "applicable_threats", "severity"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^F-[0-9]+$" },
+        "category": {
+          "enum": [
+            "perimeter",
+            "entry_control",
+            "interior_access",
+            "detection",
+            "delay",
+            "response_time",
+            "single_point_of_failure",
+            "cyber_physical",
+            "policy_or_training",
+            "environmental_design",
+            "other"
+          ]
+        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "location_in_facility": { "type": "string" },
+        "observed_during": { "type": "string" },
+        "applicable_threats": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "severity": {
+          "type": "object",
+          "required": ["scale"],
+          "properties": {
+            "scale": { "enum": ["carver", "1_5", "low_med_high"] },
+            "score": {
+              "type": "object",
+              "description": "Required when scale = carver. PVAX uses 1-5 per factor; FDA CARVER + Shock uses 1-10. PVAX threshold (e.g. 'high above 22' on a 1-5 scale) is a PVAX-defined working convention; it is not a federal standard. Calibrate per facility type and risk tolerance.",
+              "properties": {
+                "criticality": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "accessibility": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "recoverability": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "vulnerability": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "effect": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "recognizability": { "type": "integer", "minimum": 1, "maximum": 5 }
+              }
+            },
+            "rationale": { "type": "string" }
+          }
+        },
+        "evidence_refs": { "type": "array", "items": { "type": "string", "pattern": "^E-[0-9]+$" } },
+        "cpted_principle": {
+          "anyOf": [
+            { "enum": ["natural_surveillance", "natural_access_control", "territorial_reinforcement", "maintenance_and_management"] },
+            { "type": "null" }
+          ]
+        },
+        "layered_defense_zone": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ],
+          "description": "PVAX zone; not industry-canonical. Common values: perimeter, exterior_envelope, interior, asset, cyber_control_room, parking_approach, public_lobby, restricted_operations, critical_utilities."
+        },
+        "active_shooter_timeline_seconds": {
+          "type": "object",
+          "description": "PVAX timeline variables, populated locally from dispatch data, drills, engineering analysis, vendor test reports, or facility testing. NOT to be filled with documentation defaults.",
+          "properties": {
+            "detection_latency_current": { "type": "number" },
+            "detection_latency_target": { "type": "number" },
+            "notification_latency_current": { "type": "number" },
+            "notification_latency_target": { "type": "number" },
+            "lockdown_latency_current": { "type": "number" },
+            "lockdown_latency_target": { "type": "number" },
+            "breach_delay_current": { "type": "number" },
+            "breach_delay_target": { "type": "number" },
+            "responder_travel_time": { "type": "number", "description": "From local dispatch/CAD data, not assumed." },
+            "contact_intervention_time_current": { "type": "number" },
+            "contact_intervention_time_target": { "type": "number" },
+            "source_evidence": { "type": "string", "description": "How these values were obtained — e.g., 'CAD data 2024-2026', 'facility drill 2026-04-15', 'manufacturer test report'." }
+          }
+        },
+        "single_point_of_failure": { "type": "boolean" },
+        "cyber_physical_dependency": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+
+    "Control": {
+      "type": "object",
+      "required": ["id", "addresses_findings", "control_type", "title", "framework_basis", "vendor_neutral_specification"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^C-[0-9]+$" },
+        "addresses_findings": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^F-[0-9]+$" }
+        },
+        "control_type": {
+          "enum": [
+            "physical_barrier",
+            "access_control",
+            "detection",
+            "video",
+            "intrusion",
+            "communications",
+            "lighting",
+            "training",
+            "policy",
+            "procedural",
+            "environmental",
+            "redundancy",
+            "ballistic_protection",
+            "mass_notification",
+            "threat_assessment_team"
+          ]
+        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "framework_basis": {
+          "description": "Why this control is recommended. Cite frameworks, not products.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["framework"],
+            "properties": {
+              "framework": { "type": "string" },
+              "function": { "type": "string" },
+              "category": { "type": "string" },
+              "principle": { "type": "string" },
+              "zone": { "type": "string" },
+              "alignment": { "type": "string" },
+              "controls": { "type": "array", "items": { "type": "string" } },
+              "compliance": { "type": "string" }
+            }
+          }
+        },
+        "expected_outcome": {
+          "type": "object",
+          "properties": {
+            "metric": { "type": "string" },
+            "current": { "type": ["number", "string"] },
+            "post_install": { "type": ["number", "string"] },
+            "rationale": { "type": "string" },
+            "evidence_basis": { "type": "string", "description": "What documentation backs the projected effect — rated assembly data, forced-entry test, drill measurement, vendor test report, engineering analysis." }
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["approach", "reason_not_selected"],
+            "properties": {
+              "approach": { "type": "string" },
+              "reason_not_selected": { "type": "string" }
+            }
+          }
+        },
+        "vendor_neutral_specification": {
+          "description": "Performance, interoperability, lifecycle, and compliance requirements. Concrete brands and SKUs go in quotes[], not here.",
+          "type": "string",
+          "minLength": 20
+        },
+        "estimated_cost_range_usd": {
+          "type": "object",
+          "properties": {
+            "low": { "type": "number", "minimum": 0 },
+            "high": { "type": "number", "minimum": 0 }
+          }
+        },
+        "labor_hours_estimate": { "type": "number", "minimum": 0 },
+        "lead_time_weeks": { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "Quote": {
+      "type": "object",
+      "required": ["id", "control_id", "currency"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^Q-[0-9]+$" },
+        "control_id": { "type": "string", "pattern": "^C-[0-9]+$" },
+        "integrator": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "license": { "type": "string" },
+            "contact": { "type": "string" }
+          }
+        },
+        "quote_date": { "type": ["string", "null"], "format": "date" },
+        "valid_through": { "type": ["string", "null"], "format": "date" },
+        "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+        "line_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "manufacturer": { "type": "string" },
+              "model": { "type": "string" },
+              "qty": { "type": "number", "minimum": 0 },
+              "unit_cost": { "type": "number", "minimum": 0 },
+              "extended": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+        "labor": {
+          "type": "object",
+          "properties": {
+            "hours": { "type": "number", "minimum": 0 },
+            "rate_per_hour": { "type": "number", "minimum": 0 },
+            "extended": { "type": "number", "minimum": 0 }
+          }
+        },
+        "subtotal": { "type": "number", "minimum": 0 },
+        "tax": { "type": "number", "minimum": 0 },
+        "total": { "type": ["number", "null"], "minimum": 0 },
+        "compliance_attestations": {
+          "type": "object",
+          "properties": {
+            "section_889_compliant": { "type": ["boolean", "null"] },
+            "section_889_basis": {
+              "description": "Authorities supporting the §889 attestation. Standard set includes Public Law 115-232 §889, 2 CFR §200.216, FAR 52.204-24, FAR 52.204-25, FAR 52.204-26.",
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "fcc_covered_list_clear": {
+              "description": "True when the equipment is not on the current FCC Covered List as of the retrieval date below.",
+              "type": ["boolean", "null"]
+            },
+            "fcc_covered_list_retrieved": {
+              "description": "Date the FCC Covered List was checked against this quote. Covered List compliance is dynamic.",
+              "type": ["string", "null"],
+              "format": "date"
+            },
+            "buy_american_act": { "type": ["string", "null"] },
+            "trade_agreements_act": { "type": ["string", "null"] }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "Evidence": {
+      "type": "object",
+      "required": ["id", "kind", "captured_at", "stage"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^E-[0-9]+$" },
+        "kind": { "enum": ["photo", "video", "document", "drawing", "log_export", "audio"] },
+        "captured_at": { "type": "string", "format": "date-time" },
+        "captured_by": { "type": "string" },
+        "stage": { "enum": ["pre_install", "post_install", "during_assessment", "test"] },
+        "location_in_facility": { "type": "string" },
+        "file": {
+          "type": "object",
+          "properties": {
+            "filename": { "type": "string" },
+            "sha256": { "type": "string" },
+            "c2pa_manifest_present": { "type": "boolean" },
+            "size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+            "mime_type": { "type": "string" }
+          }
+        },
+        "describes_findings": { "type": "array", "items": { "type": "string", "pattern": "^F-[0-9]+$" } },
+        "describes_controls": { "type": "array", "items": { "type": "string", "pattern": "^C-[0-9]+$" } },
+        "describes_tests": { "type": "array", "items": { "type": "string", "pattern": "^T-[0-9]+$" } }
+      }
+    },
+
+    "Test": {
+      "type": "object",
+      "required": ["id", "control_id", "test_date", "test_type", "result"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^T-[0-9]+$" },
+        "control_id": { "type": "string", "pattern": "^C-[0-9]+$" },
+        "test_date": { "type": "string", "format": "date" },
+        "test_type": {
+          "enum": [
+            "operational",
+            "performance",
+            "ai_analytics_accuracy",
+            "alarm_response_time",
+            "drill",
+            "forced_entry",
+            "rated_assembly_verification"
+          ]
+        },
+        "performed_by": { "type": "string" },
+        "method": { "type": "string" },
+        "result": { "enum": ["pass", "fail", "partial"] },
+        "metrics": { "type": "object", "additionalProperties": true },
+        "evidence_refs": { "type": "array", "items": { "type": "string", "pattern": "^E-[0-9]+$" } },
+        "framework_compliance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "standard": { "type": "string" },
+              "applicable": { "type": "boolean" },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "Outcomes": {
+      "type": "object",
+      "description": "The transaction-level outcome. Distinguishes PVAX from compliance theater.",
+      "properties": {
+        "grant_outcome": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "program": {
+                  "enum": [
+                    "FEMA NSGP",
+                    "DOJ COPS SVPP",
+                    "DOJ BJA STOP School Violence",
+                    "DHS HSGP",
+                    "state_school_safety",
+                    "state_cannabis_compliance",
+                    "private_grant",
+                    "insurance_premium_credit",
+                    "other"
+                  ]
+                },
+                "fy": { "type": "string", "pattern": "^FY[0-9]{4}$" },
+                "applied_amount_usd": { "type": "number", "minimum": 0 },
+                "awarded_amount_usd": { "type": "number", "minimum": 0 },
+                "awarded_date": { "type": "string", "format": "date" },
+                "reviewer_notes_provided": { "type": "boolean" }
+              }
+            }
+          ]
+        },
+        "implementation": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "controls_funded": { "type": "array", "items": { "type": "string", "pattern": "^C-[0-9]+$" } },
+                "controls_unfunded": { "type": "array", "items": { "type": "string", "pattern": "^C-[0-9]+$" } },
+                "completed_by": { "type": "string", "format": "date" },
+                "actual_cost_usd": { "type": "number", "minimum": 0 }
+              }
+            }
+          ]
+        },
+        "post_implementation": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "properties": {
+                "incident_count_pre": { "type": "integer", "minimum": 0 },
+                "incident_count_post_12mo": { "type": "integer", "minimum": 0 },
+                "incident_categories": { "type": "array", "items": { "type": "string" } },
+                "insurance_premium_delta_usd": { "type": "number" },
+                "qualitative_notes": { "type": "string" }
+              }
+            }
+          ]
+        }
+      }
+    },
+
+    "Attestation": {
+      "type": "object",
+      "required": ["id", "role", "name", "covers_sections"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^A-[0-9]+$" },
+        "role": {
+          "enum": [
+            "assessor",
+            "integrator",
+            "ahj",
+            "insurer",
+            "facility_owner",
+            "third_party_auditor"
+          ]
+        },
+        "name": { "type": "string" },
+        "signed_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] },
+        "covers_sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": ["facility", "threat_model", "findings", "controls", "quotes", "evidence", "tests", "outcomes"]
+          }
+        },
+        "signature": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["alg", "public_key", "signature_b64"],
+              "properties": {
+                "alg": { "enum": ["ed25519", "ecdsa-p256", "rsa-pss-sha256"] },
+                "public_key": { "type": "string" },
+                "signature_b64": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "statement": { "type": "string" }
+      }
+    },
+
+    "GrantAttachment": {
+      "type": "object",
+      "required": ["program", "format"],
+      "properties": {
+        "program": { "type": "string", "examples": ["FEMA NSGP FY2026", "DOJ COPS SVPP FY2026", "Texas SAFE Grant Cycle 3"] },
+        "format": { "type": "string" },
+        "rendered_pdf_sha256": { "type": "string" },
+        "rendered_at": { "type": "string", "format": "date-time" },
+        "fields_filled": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

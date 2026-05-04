@@ -1,0 +1,31 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Editor
+.vscode/
+.idea/
+*.sublime-*
+
+# Build artifacts (none yet, reserved)
+dist/
+build/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local generated PDFs / DOCXs (keep canonical .md as source of truth)
+/PVAX-METHODOLOGY*.pdf
+/PVAX-METHODOLOGY*.docx
+/PVAX-DeepResearch-*.pdf
+/PVAX-DeepResearch-*.txt
+
+# Local environment / secrets (none expected)
+.env
+.env.local
+*.pem
+*.key
