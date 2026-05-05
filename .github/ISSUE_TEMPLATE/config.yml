@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/oneshot2001/PVAX/discussions
+    about: Questions, ideas, methodology debates, or "is this in scope?" — start here.
+  - name: 🔐 Security disclosure
+    url: https://github.com/oneshot2001/PVAX/blob/main/.github/SECURITY.md
+    about: Found a schema flaw, attestation gap, or reference-tool vulnerability? Email — do not open a public issue.

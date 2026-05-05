@@ -2,9 +2,32 @@
 
 **A signed, portable file format for physical security vulnerability assessments and the controls that close them.**
 
-> Version **0.3** — Draft (formal JSON Schema + state grant appendix, 2026-05-04)
-> License: schema and methodology under [CC0 1.0](./LICENSE-CC0.txt) (public domain). Reference tools under [MIT](./LICENSE-MIT.txt).
+[![Latest release](https://img.shields.io/github/v/release/oneshot2001/PVAX?include_prereleases&label=release&color=0a3d62)](https://github.com/oneshot2001/PVAX/releases)
+[![Schema](https://img.shields.io/badge/schema-JSON%20Schema%202020--12-0a3d62)](./schema/pvax.schema.json)
+[![Validate](https://github.com/oneshot2001/PVAX/actions/workflows/validate.yml/badge.svg)](https://github.com/oneshot2001/PVAX/actions/workflows/validate.yml)
+[![Schema license: CC0-1.0](https://img.shields.io/badge/schema-CC0--1.0-lightgrey)](./LICENSE-CC0.txt)
+[![Tools license: MIT](https://img.shields.io/badge/tools-MIT-blue)](./LICENSE-MIT.txt)
+[![NIST CSF 2.0](https://img.shields.io/badge/aligned-NIST%20CSF%202.0-2f6f4f)](https://www.nist.gov/cyberframework)
+[![FEMA NSGP / DOJ SVPP](https://img.shields.io/badge/grants-FEMA%20NSGP%20%7C%20DOJ%20SVPP-7a2e2e)](#why-now)
+
+> Version **0.3.0** — formal JSON Schema + 15-state grant appendix (2026-05-04).
+> Schema and methodology under [CC0 1.0](./LICENSE-CC0.txt) (public domain). Reference tools under [MIT](./LICENSE-MIT.txt).
 > See [CHANGELOG.md](./CHANGELOG.md) for full version history.
+
+---
+
+## Contents
+
+- [What this is](#what-this-is)
+- [Why now](#why-now)
+- [Quick start](#quick-start) — validate a `.pvax` file in 30 seconds
+- [Non-goals](#non-goals-read-this-first)
+- [The vendor-neutrality manifesto](#the-vendor-neutrality-manifesto)
+- [Who pays for what](#who-pays-for-what)
+- [What this repository contains](#what-this-repository-contains)
+- [Federal-funding compliance terminology](#federal-funding-compliance-terminology-read-this-if-you-cite-pvax-in-grant-work)
+- [Status & roadmap](#status--roadmap)
+- [Contributing](./CONTRIBUTING.md) · [Code of Conduct](./CODE_OF_CONDUCT.md) · [Security](./.github/SECURITY.md) · [Cite this work](./CITATION.cff)
 
 ---
 
@@ -38,6 +61,38 @@ Three forcing functions converging in 2026:
 2. **CISA SSAT already emits JSON.** The federal government's own [K-12 School Security Assessment Tool](https://www.cisa.gov/resources-tools/programs/school-safety-and-security/k-12-school-security-assessment-tool-ssat) supports machine-readable export. PVAX extends an existing federally-recognized primitive — it does not invent one from scratch.
 
 3. **NIST has converged cyber and physical guidance.** [NIST SP 800-82 Rev. 3](https://csrc.nist.gov/pubs/sp/800/82/r3/final), published **September 2023**, expands ICS guidance to operational technology — including systems that interact with the physical environment such as physical access control systems and building automation systems. PVAX uses [NIST CSF 2.0 Core](https://www.nist.gov/cyberframework) as its governance baseline and [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) Physical and Environmental Protection (PE) controls as its physical-security control taxonomy. NIST SP 800-171 Rev. 3 applies when CUI or federal contract data is in scope. Federal alignment, day one.
+
+## Quick start
+
+Validate the worked example against the schema in 30 seconds — no clone required:
+
+```bash
+# Fetch the schema and the worked elementary-school example
+curl -sLO https://raw.githubusercontent.com/oneshot2001/PVAX/main/schema/pvax.schema.json
+curl -sLO https://raw.githubusercontent.com/oneshot2001/PVAX/main/examples/elementary-school.pvax.json
+
+# Validate
+npx -y ajv-cli@5 validate \
+  --spec=draft2020 --strict=false \
+  -c ajv-formats \
+  -s pvax.schema.json \
+  -d elementary-school.pvax.json
+# → elementary-school.pvax.json valid
+```
+
+Or clone and run the full repo-local check:
+
+```bash
+git clone https://github.com/oneshot2001/PVAX.git
+cd PVAX
+npx -y ajv-cli@5 validate \
+  --spec=draft2020 --strict=false \
+  -c ajv-formats \
+  -s schema/pvax.schema.json \
+  -d 'examples/*.pvax.json'
+```
+
+Every push to `main` and every pull request runs the same two commands in CI — see the **Validate** badge above.
 
 ## Non-goals (read this first)
 
@@ -99,16 +154,27 @@ PVAX uses **precise** federal-funding compliance terminology rather than informa
 - **The [FCC Secure and Trusted Communications Networks Reimbursement Program](https://docs.fcc.gov/public/attachments/DA-25-741A2.pdf)** ("rip-and-replace") is a **separate, narrow program** for eligible advanced communications providers with 10 million or fewer customers. It is not a general school, nonprofit, or public-safety equipment-replacement grant. Do not conflate the two.
 - **2 CFR §200.313** governs equipment management, inventory, and disposition for federally funded equipment (cameras, access control, radios, panic-alert systems, servers).
 
-## Status
+## Status & roadmap
 
-`v0.1` is a draft for community feedback. The schema, methodology, and manifesto are subject to revision based on:
+**Current:** `v0.3.0` — first public draft for community review. The schema validates the worked example cleanly, the methodology is citation-audited, and 15 state grant programs are mapped to primary sources.
+
+**Pre-1.0 — schema, methodology, and manifesto remain subject to revision based on:**
 
 - Real assessments performed against the spec (the only test that matters)
 - FEMA NSGP / DOJ COPS SVPP application reviewer feedback
 - ASIS Physical Asset Protection Standard (2026) alignment work
 - ONVIF / C2PA media-provenance integration (waiting on stable interfaces)
 
-Open issues, structured comments, or proposed amendments welcome via GitHub issues once this is published.
+**v0.4 candidates:** controlled vocabulary files in `vocabulary/` (today inlined as enums); vertical addenda for cannabis, marina, equine, RTCC, and BWC; all-50-states grant coverage; tribal nation school-safety programs; `pvax-validate` Node CLI; `pvax-builder` mobile-first PWA; C2PA-signed `.pvax` envelope.
+
+**How to engage:**
+
+- 📐 [Propose a schema change](https://github.com/oneshot2001/PVAX/issues/new?template=schema-proposal.yml) ·
+  🧭 [Methodology feedback](https://github.com/oneshot2001/PVAX/issues/new?template=methodology-feedback.yml) ·
+  ⚖️ [Vendor-neutrality concern](https://github.com/oneshot2001/PVAX/issues/new?template=vendor-neutrality-concern.yml) ·
+  🐛 [Bug report](https://github.com/oneshot2001/PVAX/issues/new?template=bug-report.yml)
+- 💬 [Discussions](https://github.com/oneshot2001/PVAX/discussions) for open-ended questions and "is this in scope?" debates
+- 🔐 Security findings — see [SECURITY.md](./.github/SECURITY.md) (private email, not public issues)
 
 ## Maintainer note
 

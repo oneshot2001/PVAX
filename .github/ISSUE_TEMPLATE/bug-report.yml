@@ -1,0 +1,50 @@
+name: 🐛 Bug report (reference tools or examples)
+description: Reference tool crashes, example file fails validation, broken link, doc error.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - schema/pvax.schema.json (validates incorrectly)
+        - examples/*.pvax.json (does not validate against schema)
+        - pvax-validate (reference CLI)
+        - pvax-builder (reference PWA)
+        - Documentation (broken link, typo, factual error)
+        - GitHub Action / CI
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Exact commands, sample files, or links. Minimal failing case is best.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: PVAX version
+      placeholder: "v0.3.0"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment (OS, Node version, browser if relevant)

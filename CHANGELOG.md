@@ -1,5 +1,15 @@
 # PVAX Changelog
 
+## Unreleased
+
+### Repository polish (no schema or methodology changes)
+
+- README — added badge row, table of contents, and a Quick start block that validates the worked example via `npx ajv-cli` in 30 seconds. Status section updated from "v0.1 draft" to v0.3.0 + roadmap.
+- Community files — added `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, with PVAX vendor-neutrality clause), `.github/SECURITY.md` (private disclosure for schema/attestation flaws and reference-tool vulnerabilities), `.github/PULL_REQUEST_TEMPLATE.md`, and four issue templates (schema proposal, methodology feedback, vendor-neutrality concern, bug report) with a `config.yml` directing open-ended questions to Discussions.
+- `CITATION.cff` — repo is now machine-citeable for academic and grant work.
+- CI — `.github/workflows/validate.yml` runs `ajv-cli` on every push and pull request; compiles `schema/pvax.schema.json` against JSON Schema 2020-12 and validates every `examples/*.pvax.json` file.
+- Repository topics, description, Discussions enabled, Wiki/Projects disabled.
+
 ## v0.3 — 2026-05-04 (formal JSON Schema + state grant appendix)
 
 First public release on GitHub at [oneshot2001/PVAX](https://github.com/oneshot2001/PVAX).

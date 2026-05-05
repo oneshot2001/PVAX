@@ -1,0 +1,42 @@
+name: ⚖️ Vendor-neutrality concern
+description: Something in PVAX (schema, methodology, examples, recommendations) appears to favor a specific vendor or product.
+title: "[neutrality] "
+labels: ["vendor-neutrality"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The vendor-neutrality manifesto is non-negotiable. If PVAX is drifting toward vendor capture — even subtly — flag it here.
+  - type: textarea
+    id: where
+    attributes:
+      label: Where does the concern appear?
+      description: File path, line number, schema field, example, or maintainer statement. Quote the text.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this a vendor-neutrality concern?
+      description: Which of the seven manifesto rules does it violate or weaken? See README.md → "The vendor-neutrality manifesto."
+    validations:
+      required: true
+  - type: dropdown
+    id: rule
+    attributes:
+      label: Manifesto rule most at risk
+      options:
+        - "1 — Schema is public domain"
+        - "2 — Reference tools are MIT"
+        - "3 — Recommendations are method-driven, not vendor-driven"
+        - "4 — No referral economics"
+        - "5 — Conflicts of interest disclosed in the file"
+        - "6 — Vendor data flows from open or user-supplied sources only"
+        - "7 — Outcomes tracked, not adoption"
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Proposed fix
+      description: Concrete change that restores neutrality.

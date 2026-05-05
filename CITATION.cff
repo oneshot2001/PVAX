@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "PVAX — Physical Vulnerability Assessment Exchange"
+message: "If you use PVAX in research, grant work, or insurance underwriting, please cite it as below."
+type: software
+authors:
+  - family-names: Visher
+    given-names: Matthew
+    affiliation: "Independent maintainer"
+repository-code: "https://github.com/oneshot2001/PVAX"
+url: "https://github.com/oneshot2001/PVAX"
+abstract: >-
+  PVAX is an open standard for physical security vulnerability assessments. It bundles
+  vulnerability → control → quote → installed evidence → test → attestation into one
+  signed, portable, machine-readable file aligned with NIST CSF 2.0, NIST SP 800-82 R3,
+  NIST SP 800-53 R5 PE controls, FBI CJIS Security Policy, FERPA, ADA Title II, and ASIS
+  Physical Asset Protection Standard 2026, and tied to FEMA NSGP and DOJ COPS SVPP grant
+  workflows. The schema is released under CC0 1.0 (public domain). Reference tools are
+  released under MIT.
+keywords:
+  - physical security
+  - vulnerability assessment
+  - school safety
+  - CPTED
+  - CARVER
+  - NIST CSF
+  - FEMA NSGP
+  - DOJ COPS SVPP
+  - open standard
+  - vendor-neutral
+license: CC0-1.0
+license-url: "https://creativecommons.org/publicdomain/zero/1.0/"
+version: "0.3.0"
+date-released: "2026-05-04"

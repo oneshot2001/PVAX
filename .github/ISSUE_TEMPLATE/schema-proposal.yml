@@ -1,0 +1,59 @@
+name: 📐 Schema proposal
+description: Propose a change to schema/pvax.schema.json — new field, new $def, breaking change, or vocabulary update.
+title: "[schema] "
+labels: ["schema"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for additions or changes to `schema/pvax.schema.json`. For methodology debates that do not change the schema, use **Methodology feedback** instead.
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Change type
+      options:
+        - New field
+        - New $def / vocabulary entry
+        - Field rename or restructure (breaking)
+        - Validation tightening (e.g., new required field)
+        - Validation loosening (e.g., remove required, widen enum)
+        - Documentation only (SPEC.md)
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What real-world assessment, grant requirement, or interop case forces this change? Cite the primary source.
+      placeholder: "Example — FEMA NSGP FY2026 NOFO (link) introduces a new investment justification field that PVAX cannot currently express."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Concrete diff or pseudo-diff against the current schema. JSON Schema 2020-12 syntax.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Worked example
+      description: A snippet of `.pvax.json` showing the new/changed field in use.
+      render: json
+  - type: dropdown
+    id: vendor-neutrality
+    attributes:
+      label: Vendor-neutrality check
+      description: Does this change introduce or imply a specific vendor, product, or SKU?
+      options:
+        - "No — method-driven, applies to any vendor"
+        - "Yes — and here is why it is necessary"
+    validations:
+      required: true
+  - type: textarea
+    id: backward-compat
+    attributes:
+      label: Backward compatibility
+      description: How does this affect files validated against earlier versions? Migration path?

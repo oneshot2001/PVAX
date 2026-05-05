@@ -1,0 +1,45 @@
+name: 🧭 Methodology feedback
+description: Disagreement with or addition to METHODOLOGY.md — CPTED, layered defense, CARVER, active-shooter timeline, or cyber-physical convergence.
+title: "[methodology] "
+labels: ["methodology"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when the schema is fine but the assessment framework needs work — citation corrections, missing controls, debated interpretations, or new domain coverage (cannabis, marina, equine, RTCC, BWC, etc.).
+  - type: dropdown
+    id: section
+    attributes:
+      label: Methodology section
+      options:
+        - CPTED
+        - PVAX 4D layered defense (Deter / Detect / Delay / Respond)
+        - CARVER scoring
+        - Active-shooter timeline (variables)
+        - Cyber-physical convergence (NIST SP 800-82 R3 alignment)
+        - NIST CSF 2.0 Core mapping
+        - NIST SP 800-53 R5 PE control mapping
+        - State / federal grant alignment
+        - Vertical addendum (specify in description)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim or correction
+      description: Be specific. "The methodology says X. The correct/better statement is Y."
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Primary source
+      description: NIST publication, FEMA NOFO, DOJ COPS solicitation, NFPA standard, statute, peer-reviewed paper. Direct URL or citation. Industry blog posts and vendor whitepapers are not primary sources.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence from real assessments (optional but valuable)
+      description: If you have performed assessments where the current methodology produced wrong or weak results, describe the case. Sanitized — no PII, no facility identifiers.
