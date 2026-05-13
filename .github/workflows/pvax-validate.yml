@@ -28,8 +28,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies (reproducible)
+        run: npm ci
 
-      - name: Run fixture tests
+      - name: Strict-mode schema compile gate
+        run: npm run compile-schema
+
+      - name: Run unit + CLI tests
         run: npm test
+
+      - name: npm pack smoke (schema is bundled into tarball)
+        run: |
+          npm pack --pack-destination=/tmp
+          tar -tzf /tmp/pvax-validate-*.tgz | grep -q '^package/schema/pvax.schema.json$' \
+            || (echo "schema/pvax.schema.json missing from tarball" && exit 1)

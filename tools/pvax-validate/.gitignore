@@ -1,2 +1,5 @@
 node_modules/
 *.log
+# Schema is copied in by `npm pack` (scripts/copy-schema.mjs); canonical lives at ../../schema/.
+schema/
+*.tgz

@@ -271,6 +271,42 @@
       "stage": "during_assessment",
       "location_in_facility": "main entrance, west elevation, interior corridor view",
       "describes_findings": ["F-001"]
+    },
+    {
+      "id": "E-003",
+      "kind": "photo",
+      "captured_at": "2026-05-01T08:10:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "main entrance, west elevation, door-prop detail",
+      "describes_findings": ["F-001"]
+    },
+    {
+      "id": "E-004",
+      "kind": "photo",
+      "captured_at": "2026-05-01T08:14:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "front office reception window",
+      "describes_findings": ["F-002"]
+    },
+    {
+      "id": "E-005",
+      "kind": "photo",
+      "captured_at": "2026-05-01T09:32:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "rear playground gate exterior, east elevation",
+      "describes_findings": ["F-003"]
+    },
+    {
+      "id": "E-006",
+      "kind": "photo",
+      "captured_at": "2026-05-01T09:34:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "existing analog camera locations (3 pre-NDAA units)",
+      "describes_findings": ["F-003"]
     }
   ],
 

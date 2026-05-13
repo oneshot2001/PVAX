@@ -7,7 +7,14 @@ if (!file) {
   process.exit(2);
 }
 
-const result = await validatePvaxFile(file);
+let result;
+try {
+  result = await validatePvaxFile(file);
+} catch (err) {
+  console.error(`FAIL  ${file}`);
+  console.error(`  read error: ${err.message}`);
+  process.exit(2);
+}
 
 if (result.valid) {
   console.log(`PASS  ${file}`);
@@ -20,5 +27,8 @@ for (const err of result.schemaErrors) {
 }
 for (const err of result.crossRefErrors) {
   console.error(`  xref     ${err.path}  ${err.message}`);
+}
+for (const err of result.vendorErrors ?? []) {
+  console.error(`  vendor   ${err.path}  ${err.message}`);
 }
 process.exit(1);

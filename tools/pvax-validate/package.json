@@ -13,10 +13,13 @@
   "files": [
     "bin",
     "lib",
+    "schema",
     "README.md"
   ],
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "compile-schema": "node -e \"import('./lib/validate.mjs').then(m => m.validatePvax({})).then(() => console.log('schema compiles under strict mode'))\"",
+    "prepack": "node scripts/copy-schema.mjs"
   },
   "engines": {
     "node": ">=20"
