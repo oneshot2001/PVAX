@@ -1,0 +1,34 @@
+{
+  "name": "pvax-validate",
+  "version": "0.1.0",
+  "description": "Reference CLI validator for PVAX (Physical Vulnerability Assessment Exchange) files.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "pvax-validate": "bin/pvax-validate.mjs"
+  },
+  "exports": {
+    ".": "./lib/validate.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oneshot2001/PVAX.git",
+    "directory": "tools/pvax-validate"
+  },
+  "keywords": ["pvax", "physical-security", "validator", "json-schema", "fema-nsgp"]
+}

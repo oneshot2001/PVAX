@@ -138,6 +138,7 @@ The free tier exists to make sure the schema survives. The paid tiers exist on t
 - [`METHODOLOGY.md`](./METHODOLOGY.md) — the assessment framework. CPTED + PVAX layered defense (4D) + CARVER + active-shooter timeline variables + cyber-physical convergence. Vendor-neutral by construction.
 - [`appendices/state-grants.md`](./appendices/state-grants.md) — 15-state school safety grant programs with primary-source URLs and verification confidence flags.
 - [`examples/elementary-school.pvax.json`](./examples/elementary-school.pvax.json) — a worked K-12 assessment that validates against the schema.
+- [`tools/pvax-validate/`](./tools/pvax-validate/) — reference CLI validator (Node + ajv, MIT). Checks JSON Schema conformance + `addresses_findings` cross-references. Exit codes `0`/`1`. Three acceptance fixtures.
 - [`distribution-and-pricing.md`](./distribution-and-pricing.md) — go-to-market notes (where the buyers actually are; not on X).
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) — how to contribute, source-hierarchy rules, vendor-neutrality requirements.
 - [`CHANGELOG.md`](./CHANGELOG.md) — full version history.

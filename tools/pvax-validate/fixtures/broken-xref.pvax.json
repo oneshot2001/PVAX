@@ -1,0 +1,478 @@
+{
+  "pvax_version": "0.1",
+  "assessment_id": "01HKM5XEA37PQ4WB2N9FZ4VRTM",
+  "generated_at": "2026-05-03T14:22:00-06:00",
+  "generated_by": {
+    "assessor": {
+      "name": "Matthew Visher",
+      "credentials": [
+        "Retired Sergeant, Unified Police Department (20 years)",
+        "Multi-agency federal task force (USMS, DEA, ATF, FBI, DHS)"
+      ],
+      "license_or_cert": "ASIS PSP (in process)",
+      "organization": "Independent",
+      "contact": "matthew@example.com"
+    },
+    "tool": {
+      "name": "pvax-builder",
+      "version": "0.1.0",
+      "vendor": "Independent",
+      "source_url": "https://github.com/oneshot2001/pvax-builder"
+    },
+    "coi_disclosed": [
+      {
+        "vendor": "Axis Communications",
+        "relationship": "Day-job employer (Alpha Vision, Axis technology partner). Recommendations in this file are method-driven; specific products appear only in `quotes`, sourced from at least two independent integrator firms.",
+        "applies_to": "all sections"
+      }
+    ]
+  },
+  "facility": {
+    "facility_id": "lincoln-elem-utah-001",
+    "name": "Lincoln Elementary School (illustrative example)",
+    "type": "k12_school",
+    "occupancy_count": 420,
+    "address": {
+      "line1": "123 Example Street",
+      "city": "Salt Lake City",
+      "state": "UT",
+      "postal_code": "84101",
+      "country": "US"
+    },
+    "geo": {
+      "lat": 40.7608,
+      "lon": -111.8910
+    },
+    "construction": {
+      "primary_use": "education",
+      "year_built": 1978,
+      "stories": 1,
+      "exterior_construction": "masonry",
+      "roof": "flat"
+    },
+    "ahj": {
+      "name": "Salt Lake City Fire Marshal",
+      "jurisdiction_code": "UT-SLC"
+    },
+    "ssat_export_uuid": null
+  },
+  "threat_model": {
+    "scenarios": [
+      {
+        "id": "active_shooter_external",
+        "name": "Active shooter, external entry",
+        "frequency_class": "low",
+        "consequence_class": "catastrophic",
+        "design_basis_threat": "Single armed assailant attempting entry during school hours; 4-minute response time to first armed responder per current CAD averages."
+      },
+      {
+        "id": "insider_unauthorized_access",
+        "frequency_class": "medium",
+        "consequence_class": "high"
+      },
+      {
+        "id": "after_hours_burglary",
+        "frequency_class": "medium",
+        "consequence_class": "moderate"
+      },
+      {
+        "id": "swatting_or_diversion",
+        "frequency_class": "low",
+        "consequence_class": "moderate"
+      },
+      {
+        "id": "cyber_physical_compromise",
+        "frequency_class": "low",
+        "consequence_class": "high"
+      }
+    ],
+    "framework_references": [
+      {
+        "name": "NIST SP 800-82 Rev. 3",
+        "published": "2023-09",
+        "section": "OT physical security convergence; physical access control systems within scope",
+        "url": "https://csrc.nist.gov/pubs/sp/800/82/r3/final"
+      },
+      {
+        "name": "NIST CSF 2.0",
+        "url": "https://www.nist.gov/cyberframework"
+      },
+      {
+        "name": "NIST SP 800-53 Rev. 5",
+        "section": "Physical and Environmental Protection (PE) controls",
+        "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"
+      },
+      {
+        "name": "ASIS Physical Asset Protection Standard 2026"
+      },
+      {
+        "name": "CISA K-12 School Security Assessment Tool (SSAT)",
+        "url": "https://www.cisa.gov/resources-tools/programs/school-safety-and-security/k-12-school-security-assessment-tool-ssat"
+      },
+      {
+        "name": "FERPA video/photo guidance",
+        "applicable_when": "K-12 video records directly related to a student",
+        "url": "https://studentprivacy.ed.gov/faq/faqs-photos-and-videos-under-ferpa"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "category": "entry_control",
+      "title": "Primary entrance has no vestibule; door propped open during arrival window",
+      "description": "Main entrance (west elevation) is a single set of double doors directly into the main corridor. During the 25-minute morning arrival window (07:55–08:20) the doors are wedged open with a rubber stop. Front office staff sit 18 feet inside the corridor with a partial sight line obstructed by a coat-rack divider. No visitor identification verification before interior corridor access.",
+      "location_in_facility": "main entrance, west elevation",
+      "observed_during": "weekday-morning-arrival-2026-05-01",
+      "applicable_threats": [
+        "active_shooter_external",
+        "insider_unauthorized_access"
+      ],
+      "severity": {
+        "scale": "carver",
+        "score": {
+          "criticality": 5,
+          "accessibility": 5,
+          "recoverability": 4,
+          "vulnerability": 5,
+          "effect": 5,
+          "recognizability": 5
+        },
+        "rationale": "Free entry during the highest-occupancy window of the day; sight line obstruction means detection by office staff is delayed; no architectural delay element between street and classroom corridor."
+      },
+      "evidence_refs": [
+        "E-001",
+        "E-002",
+        "E-003"
+      ],
+      "cpted_principle": "natural_access_control",
+      "layered_defense_zone": "exterior_envelope",
+      "active_shooter_timeline_seconds": {
+        "current": 30,
+        "post_mitigation": 90
+      },
+      "single_point_of_failure": false,
+      "cyber_physical_dependency": null
+    },
+    {
+      "id": "F-002",
+      "category": "single_point_of_failure",
+      "title": "Front office staff member is the entire detection layer for visitor entry",
+      "description": "When primary doors are closed, the only mechanism by which an unauthorized visitor is identified is the front office secretary visually recognizing the person through a 24-inch-wide reception window. The secretary does not have a duress alert mechanism; intercom to district office is via desk phone (typical dial time 8–12 seconds).",
+      "location_in_facility": "front office",
+      "observed_during": "during_assessment",
+      "applicable_threats": [
+        "active_shooter_external",
+        "insider_unauthorized_access",
+        "medical_emergency_disguised_threat"
+      ],
+      "severity": {
+        "scale": "carver",
+        "score": {
+          "criticality": 5,
+          "accessibility": 4,
+          "recoverability": 4,
+          "vulnerability": 5,
+          "effect": 5,
+          "recognizability": 4
+        }
+      },
+      "evidence_refs": [
+        "E-004"
+      ],
+      "cpted_principle": "natural_surveillance",
+      "layered_defense_zone": "interior",
+      "single_point_of_failure": true
+    },
+    {
+      "id": "F-003",
+      "category": "detection",
+      "title": "Camera coverage gap on rear playground gate",
+      "description": "Rear playground access gate is unobserved by any current camera. Existing analog DVR-based cameras (3 of 5 are pre-NDAA Hikvision units) cover front entrance, parking lot, and main corridor only. Rear gate is the closest unmonitored ingress to two kindergarten classrooms.",
+      "location_in_facility": "rear playground, east elevation",
+      "applicable_threats": [
+        "after_hours_burglary",
+        "insider_unauthorized_access",
+        "active_shooter_external"
+      ],
+      "severity": {
+        "scale": "carver",
+        "score": {
+          "criticality": 4,
+          "accessibility": 4,
+          "recoverability": 3,
+          "vulnerability": 4,
+          "effect": 4,
+          "recognizability": 3
+        }
+      },
+      "evidence_refs": [
+        "E-005",
+        "E-006"
+      ],
+      "cpted_principle": "natural_surveillance",
+      "layered_defense_zone": "perimeter",
+      "active_shooter_timeline_seconds": {
+        "current": 45,
+        "post_mitigation": 15
+      }
+    },
+    {
+      "id": "F-004",
+      "category": "policy_or_training",
+      "title": "Lockdown drill cadence and methodology insufficient",
+      "description": "School conducts one announced lockdown drill per year per Utah state minimum. No alternative-route drills, no hard-corner practice in classrooms, no accountability check between teachers and front office during drill. Per Utah HB 14 (2024) school administrators are encouraged but not required to conduct unannounced drills with law enforcement participation.",
+      "applicable_threats": [
+        "active_shooter_external",
+        "active_shooter_internal",
+        "swatting_or_diversion"
+      ],
+      "severity": {
+        "scale": "carver",
+        "score": {
+          "criticality": 5,
+          "accessibility": 5,
+          "recoverability": 3,
+          "vulnerability": 4,
+          "effect": 5,
+          "recognizability": 5
+        }
+      },
+      "evidence_refs": [],
+      "cpted_principle": null,
+      "layered_defense_zone": "interior"
+    }
+  ],
+  "controls": [
+    {
+      "id": "C-001",
+      "addresses_findings": [
+        "F-999"
+      ],
+      "control_type": "physical_barrier",
+      "title": "Vestibule with verified visitor management at primary entrance",
+      "description": "Construct interior secondary set of doors creating a controlled vestibule between main entrance and corridor. During school hours, secondary doors remain electronically locked. Visitor identification verified at a vestibule reception window before secondary unlock. Front office staff equipped with wireless duress alert tied to district SOC.",
+      "framework_basis": [
+        {
+          "framework": "NIST CSF 2.0",
+          "function": "PR.AC-1",
+          "category": "Identity Management & Access Control"
+        },
+        {
+          "framework": "NIST CSF 2.0",
+          "function": "PR.PT-3",
+          "category": "Communications and control networks are protected"
+        },
+        {
+          "framework": "CPTED",
+          "principle": "natural_access_control"
+        },
+        {
+          "framework": "Layered Defense",
+          "zone": "exterior_envelope"
+        },
+        {
+          "framework": "CISA K-12 SSAT",
+          "alignment": "Layered Approach #2 — Building Access Control"
+        }
+      ],
+      "expected_outcome": {
+        "metric": "active_shooter_timeline_seconds",
+        "current": 30,
+        "post_install": 90,
+        "rationale": "Vestibule adds physical delay element of 60s minimum (verified via ID check + secondary unlock procedure); duress alert provides parallel response trigger independent of staff dialing."
+      },
+      "alternatives": [
+        {
+          "approach": "Staffed entry only, no vestibule construction",
+          "reason_not_selected": "Single-point-of-failure on staff presence; does not satisfy NIST PR.AC-1 verification requirement"
+        },
+        {
+          "approach": "Mantrap turnstile",
+          "reason_not_selected": "Inconsistent with K-12 fire egress requirements (NFPA 101 chapter 14)"
+        },
+        {
+          "approach": "Camera-only intercom screening",
+          "reason_not_selected": "Provides identification but no physical delay element"
+        }
+      ],
+      "vendor_neutral_specification": "Door hardware: ANSI/BHMA Grade 1 cylindrical lockset, 5-pin minimum, restricted keyway. Electric strike: 12/24 VDC fail-secure, 1500lb static, monitored. Visitor management: any commercial visitor management system supporting (a) credential issuance with photo, (b) state ID scan logging, (c) lockdown-condition automatic re-locking integration via dry contact or API. Wireless duress: at least two physical buttons + one mobile-app fallback, tested escalation path to district SOC and 911 PSAP.",
+      "estimated_cost_range_usd": {
+        "low": 18000,
+        "high": 32000
+      },
+      "labor_hours_estimate": 24,
+      "lead_time_weeks": 6
+    },
+    {
+      "id": "C-002",
+      "addresses_findings": [
+        "F-003"
+      ],
+      "control_type": "video",
+      "title": "Replace analog rear-elevation cameras with NDAA-compliant IP cameras",
+      "description": "Replace 3 pre-NDAA analog cameras with NDAA Section 889 compliant IP cameras providing rear playground and side-elevation coverage. Add network video recorder with 30-day retention and remote viewing for school administrator + district SOC. Specification is method-driven (resolution, FoV, environmental rating, NDAA compliance) and not brand-specific.",
+      "framework_basis": [
+        {
+          "framework": "NIST CSF 2.0",
+          "function": "DE.CM-1",
+          "category": "Network Detection / Continuous Monitoring"
+        },
+        {
+          "framework": "NIST SP 800-53 Rev. 5",
+          "controls": [
+            "PE-3 Physical Access Control",
+            "PE-6 Monitoring Physical Access"
+          ]
+        },
+        {
+          "framework": "Section 889 / 2 CFR §200.216 / FAR 52.204-24-26 / FCC Covered List",
+          "compliance": "required for federal grant- or contract-funded equipment"
+        },
+        {
+          "framework": "PVAX Layered Defense (4D)",
+          "zone": "perimeter"
+        },
+        {
+          "framework": "CISA K-12 SSAT",
+          "alignment": "Layered Approach #4 — Surveillance"
+        }
+      ],
+      "expected_outcome": {
+        "metric": "active_shooter_timeline_seconds",
+        "current": 45,
+        "post_install": 15,
+        "rationale": "Continuous rear coverage enables parallel detection rather than sequential check-after-event."
+      },
+      "vendor_neutral_specification": "Three (3) outdoor-rated IP cameras minimum: IP66 environmental, IK10 impact, 4MP minimum resolution at 30fps, integrated IR illumination minimum 30m, varifocal lens covering rear gate (4mm) and side elevations (2.8mm). H.264 + H.265 codec support. Manufacturer must be free of Section 889 covered-equipment restrictions per current FCC Covered List, FAR 52.204-24/25/26, and 2 CFR §200.216 — verify against the FCC Covered List at the date of procurement, not against a static manufacturer list. Network video recorder: minimum 30-day storage at 4MP/30fps for 3 cameras (~6TB usable). Remote view: TLS 1.2+, RBAC, audit log retained 90 days minimum.",
+      "estimated_cost_range_usd": {
+        "low": 7500,
+        "high": 14000
+      },
+      "labor_hours_estimate": 16,
+      "lead_time_weeks": 4
+    },
+    {
+      "id": "C-003",
+      "addresses_findings": [
+        "F-004"
+      ],
+      "control_type": "training",
+      "title": "Quarterly lockdown drills with law enforcement participation; alternative-route exercises",
+      "description": "Move from annual announced drill (Utah minimum) to quarterly drills, two of which include local law enforcement participation in observer + debrief role. Add monthly classroom-level hard-corner practice during morning meetings. Add documented teacher-to-front-office accountability check during drill (current procedure has no closed-loop verification).",
+      "framework_basis": [
+        {
+          "framework": "NIST CSF 2.0",
+          "function": "PR.AT-1",
+          "category": "Awareness and Training"
+        },
+        {
+          "framework": "ASIS PAP Standard 2026",
+          "alignment": "Section on operational readiness"
+        },
+        {
+          "framework": "CISA K-12 SSAT",
+          "alignment": "Layered Approach #6 — Mental Health, Anti-Bullying, and Social-Emotional Learning + Drill Cadence"
+        }
+      ],
+      "expected_outcome": {
+        "metric": "drill_completion_with_accountability",
+        "current": 0,
+        "post_install": 4,
+        "rationale": "Quarterly cadence + closed-loop accountability provides realistic baseline for response performance measurement."
+      },
+      "vendor_neutral_specification": "Drill curriculum aligned to ALICE or Standard Response Protocol (district choice). Coordination with local PD School Resource Officer. Documentation in district drill log. Annual review by SRO commander.",
+      "estimated_cost_range_usd": {
+        "low": 0,
+        "high": 4500
+      },
+      "labor_hours_estimate": 12,
+      "lead_time_weeks": 1
+    }
+  ],
+  "quotes": [
+    {
+      "id": "Q-001",
+      "control_id": "C-001",
+      "integrator": {
+        "name": "[Integrator A — to be sourced via competitive bid]",
+        "license": "UT-LV-XXXXX",
+        "contact": "..."
+      },
+      "quote_date": null,
+      "valid_through": null,
+      "currency": "USD",
+      "line_items": [],
+      "total": null,
+      "compliance_attestations": {
+        "section_889_ndaa_compliant": null,
+        "buy_american_act": null,
+        "trade_agreements_act": null
+      },
+      "notes": "Placeholder. PVAX methodology requires at least two independent integrator quotes per control to avoid vendor capture. District procurement runs the bid."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-001",
+      "kind": "photo",
+      "captured_at": "2026-05-01T08:05:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "main entrance, west elevation, exterior",
+      "file": {
+        "filename": "F-001-pre-install-main-entrance-exterior.jpg",
+        "sha256": "placeholder-sha256-pending-real-capture",
+        "c2pa_manifest_present": false,
+        "size_bytes": null,
+        "mime_type": "image/jpeg"
+      },
+      "describes_findings": [
+        "F-001"
+      ],
+      "describes_controls": [],
+      "describes_tests": []
+    },
+    {
+      "id": "E-002",
+      "kind": "photo",
+      "captured_at": "2026-05-01T08:07:00-06:00",
+      "captured_by": "Matthew Visher",
+      "stage": "during_assessment",
+      "location_in_facility": "main entrance, west elevation, interior corridor view",
+      "describes_findings": [
+        "F-001"
+      ]
+    }
+  ],
+  "tests": [],
+  "outcomes": {
+    "grant_outcome": null,
+    "implementation": null,
+    "post_implementation": null
+  },
+  "attestations": [
+    {
+      "id": "A-001",
+      "role": "assessor",
+      "name": "Matthew Visher",
+      "signed_at": null,
+      "covers_sections": [
+        "facility",
+        "threat_model",
+        "findings",
+        "controls",
+        "evidence"
+      ],
+      "signature": null,
+      "statement": "I have personally observed the conditions described in this assessment on the date(s) listed in `evidence` and attest that the findings reflect the facility as it existed at that time. Signature pending file finalization."
+    }
+  ],
+  "grant_attachments": [],
+  "extensions": {
+    "pvax-builder.draft_state": {
+      "completion_pct": 65,
+      "next_step": "Site re-walk for east-elevation evidence + finalize quotes from two independent integrators"
+    }
+  }
+}
